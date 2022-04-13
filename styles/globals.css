@@ -1,0 +1,303 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body{
+    padding: 0px;
+    margin: 0px;
+    font-family: sans-serif;
+}
+
+p{
+    font-weight: 300;
+}
+
+b{
+    font-weight: 400;
+}
+
+.download-bar{
+    background-color: #163163;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+#header{
+    background-color: #244583;
+    box-sizing: border-box;
+    font-family: 'Overpass', sans-serif;
+}
+.right-nav{
+    align-items: center;
+}
+
+.verified{
+  color: #244583 !important;
+}
+.alert{
+    color: #BF1D1D !important;
+}
+.unverified{
+    color: #F9AB00;
+}
+
+#header .navLink{
+    text-decoration: none;
+    color: white;
+    text-transform: uppercase;
+    opacity: 0.7;
+    font-weight: 400;
+    padding: 1rem 0.6rem;
+}
+
+.active{
+    color: #FFE000 !important;
+    opacity: 1 !important;
+}
+
+#header .navLink:hover{
+    opacity: 1;
+}
+
+#header .container{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    padding: 8px;
+}
+
+#languageSelector{
+    margin-right: 1rem;
+}
+
+select{
+    font-size: 1.2rem;
+    background: white;
+    border: 0px;
+    box-sizing: border-box;
+}
+
+#logo{
+    width: 160px;
+}
+
+.platform-badges{
+    display: flex;
+    justify-content: center;
+    align-content: center;
+}
+
+.platform-badges a{
+    margin: 0em 0.3em;
+}
+
+.platform-badges img{
+    height: 35px;
+}
+
+.container{
+    width: 90%;
+    margin: 0px auto;
+    box-sizing: border-box;
+    max-width: 800px;
+    box-sizing: border-box;
+}
+
+.screenshots{
+    max-width: 300px;
+}
+
+.news-item{
+    display: flex;
+    flex-direction: column;
+    padding: 0.8rem 0.1rem 1rem 0.1rem;
+    box-sizing: border-box;
+    border-bottom: 1px solid rgba(10,10,10,0.05);
+}
+.news-item a{
+    text-decoration: none;
+}
+.news-item .content{
+    padding: 0rem 0rem;
+}
+.news-item .title{
+    padding: 0;
+    margin: 0;
+    margin-bottom: 0.8rem;
+    font-size: 1.2rem;
+    font-weight: 500;
+}
+.news-item .icon{
+    width: 28px;
+    height: 28px;
+    display: inline-block;
+}
+.items{
+    display: flex;
+}
+.sub-section{
+    padding: 0;
+    box-sizing: border-box;
+    margin-bottom: 0.4rem;
+}
+.sub-section h3{
+    margin: 0px;
+    padding: 0.3em 0;
+    font-weight: 600;
+}
+.sub-section h4{
+    margin: 0px;
+    padding: 0.2em 0;
+    color: #4284FF;
+    font-weight: 500;
+}
+
+.sub-section p{
+    margin: 0px;
+    padding: 0.6em 0 0.4em 0;
+}
+
+.loading{
+    text-align: center;
+}
+
+.timestamp{
+    color: #BBBBBB;
+    font-weight: 400;
+}
+
+.item-meta{
+    display: flex;
+    flex: 1;
+}
+
+.item-meta-left{
+    flex: 1;
+}
+
+.item-meta-right{
+    width: 20px;
+    height: 20px;
+
+}
+
+.more-info{
+    color: #000000;
+    padding: 0px;
+    text-align: right;
+}
+
+.more-info img{
+    margin-top: 0.5rem;
+    margin-right: 0.5em;
+    display: inline-block;
+}
+
+.verification-details{
+    padding: 1em 0em;
+}
+.verification-details h4{
+    margin: 0px;
+    padding: 0.2em 0em;
+}
+.verification-details p{
+    padding: 0px;
+    margin: 0px;
+}
+
+.verification-details a{
+    color: #1890ff;
+}
+
+.stat-header{
+    border-bottom: 1px solid rgba(10,10,10,0.1);
+}
+
+.stat-area{
+    display: flex;
+    justify-content: space-between;
+}
+.section-header{
+    text-align: center;
+}
+
+.stat-area .stat{
+    text-align: center;
+    padding: 0.4rem 1rem;
+}
+
+.stat-area .stat .label{
+    font-size: 0.8rem;
+    color: #6B6B6B;
+    padding: 0px;
+    margin: 0.2rem 0em;
+    text-transform: uppercase;
+}
+.stat-area .stat .number{
+    padding: 0px;
+    margin: 0.2rem 0em;
+    font-size: 1.6rem;
+}
+
+#search-box{
+    padding: 1rem 0.5rem;
+    box-sizing: border-box;
+}
+
+@media (max-width: 500px) {
+    #languageSelector{
+        display: block;
+        margin-bottom: 2rem;
+        width: 100%;
+    }
+    header{
+        padding: 0px 0px;
+    }
+}
+
+@media (max-width: 600px) {
+    .container{
+        width: 92%;
+    }
+    .right-nav{
+        padding: 1.2rem 0rem;
+        width: 100%;
+    }
+
+    #languageSelector{
+        margin-right: 0.4rem !important;
+    }
+
+    #header .navLink{
+        margin-left: 0.4rem !important;
+        font-size: 0.85rem;
+    }
+}
+
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
