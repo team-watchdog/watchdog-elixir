@@ -1,9 +1,12 @@
+import axios from "axios";
 import { FunctionComponent } from "react";
 import { Formik, FormikErrors } from "formik";
+import { parse } from 'csv-parse/browser/esm/sync';
 
 // partials
 import DrugSearch from "./DrugSearch";
 import InstitutionSearch from "./InstitutionSearch";
+import { Button } from "./Button";
 
 // types
 import { Request, DrugRequestItem, Equipment } from "../shared/types";
@@ -23,6 +26,8 @@ interface RequestFormProps{
 interface RequestFormikForm extends Request{
     newEquipmentName: string;
     newEquipmentNotes: string;
+    batchProcessing: boolean;
+    csvRecords: unknown[] | null;
 }
 
 const RequestForm: FunctionComponent<RequestFormProps> = (props) => {
@@ -31,6 +36,8 @@ const RequestForm: FunctionComponent<RequestFormProps> = (props) => {
     const initialValues = request ? request as RequestFormikForm : {
         drugItems: [] as DrugRequestItem[],
         equipments: [] as Equipment[],
+        csvRecords: null,
+        batchProcessing: false,
     } as RequestFormikForm;
 
     return (
@@ -78,6 +85,65 @@ const RequestForm: FunctionComponent<RequestFormProps> = (props) => {
                                 name="contactNumber" 
                                 value={values.contactNumber}
                                 onChange={handleChange} 
+                            />
+                        </div>
+                    </div>
+                    <div className={`${styles.field} bg-zinc-100 py-4 px-4 rounded-md`}>
+                        <label className={styles.label}>Upload Request CSV</label>
+                        <p>Upload a .csv file with the fields "item" and "quantity" to bulk match items</p>
+                        <input 
+                            type="file" 
+                            accept=".csv"
+                            multiple={false}
+                            onChange={(e) => {
+                                const files = e.target.files;
+                                setFieldValue("batchProcessing", true);
+                                if (files && files.length > 0) {
+                                    const fileReader =new FileReader();
+
+                                    fileReader.onload = ((ev) => {
+                                        const rawText = fileReader.result;
+                                        const records = parse(rawText as string, {
+                                            columns: true
+                                        });
+                                        setFieldValue("csvRecords", records);
+                                        setFieldValue("batchProcessing", false);
+                                    });
+
+                                    fileReader.readAsText(files[0]);
+                                }
+                            }}
+                        />
+                        <div className="py-1">
+                            <Button 
+                                type="default"
+                                label="Import File"
+                                disabled={values.csvRecords ? false : true}
+                                submitting={values.batchProcessing}
+                                onMouseDown={async () => {
+                                    setFieldValue("batchProcessing", true);
+
+                                    try {
+                                        const res = await axios.post("/api/bulkMatch", values.csvRecords);
+                                        if (res.data && res.data.results) {
+                                            setFieldValue("drugItems", [
+                                                ...values.drugItems,
+                                                ...res.data.results.drugItems,
+                                            ]);
+
+                                            setFieldValue("equipments", [
+                                                ...values.equipments,
+                                                ...res.data.results.equipments,
+                                            ]);
+                                        }
+                                        console.log(res.data);
+                                        setFieldValue("csvRecords", null);
+                                    } catch (e) {
+                                        console.log(e);
+                                    }
+                                    console.log("Request to the server");
+                                    setFieldValue("batchProcessing", false);
+                                }}
                             />
                         </div>
                     </div>

@@ -21,14 +21,30 @@ export default async function handler(
     const resp = await elasticClient.search({
         index: 'drugs',
         query: {
-            multi_match: {
-                query: searchTerm,
-                minimum_should_match: 3,
-                fields: ["genericName", "brandName"],
-                operator: "or",
-                fuzziness: "AUTO",
-                fuzzy_transpositions: true
-            }
+          bool: {
+            must: [
+              {
+                multi_match: {
+                  type: "best_fields",
+                  query: searchTerm,
+                  fields: ["genericName", "brandName"],
+                  lenient: true
+                }
+              }
+            ],
+            should: [
+              {
+                multi_match: {
+                  query: searchTerm,
+                  minimum_should_match: 3,
+                  fields: ["genericName", "brandName"],
+                  operator: "or",
+                  fuzziness: "AUTO",
+                  fuzzy_transpositions: true
+                }
+              }
+            ]
+          }
         }
     });
 
