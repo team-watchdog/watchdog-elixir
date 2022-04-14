@@ -8,6 +8,11 @@ body{
     font-family: sans-serif;
 }
 
+@page  
+{ 
+    margin: 25mm 10mm 25mm 10mm;
+} 
+
 p{
     font-weight: 300;
 }

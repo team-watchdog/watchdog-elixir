@@ -92,7 +92,7 @@ export const RequestFull: FunctionComponent<RequestFullProps> = ({ request } : R
                             </thead>
                             <tbody>
                                 {request.drugItems.map((item, i) => (
-                                    <tr key={i}>
+                                    <tr key={i} className="break-inside-avoid">
                                         <td className="align-top">{item.drug.genericName}</td>
                                         <td className="align-top">{item.drug.brandName}</td>
                                         <td className="align-top">{item.drug.importer.name}</td>
@@ -119,7 +119,7 @@ export const RequestFull: FunctionComponent<RequestFullProps> = ({ request } : R
                             </thead>
                             <tbody>
                                 {request.equipments.map((item, i) => (
-                                    <tr key={i}>
+                                    <tr key={i} className="break-inside-avoid">
                                         <td className="align-top">
                                             <b>{item.itemName}</b>
                                             <p>{item.itemDescription}</p>
