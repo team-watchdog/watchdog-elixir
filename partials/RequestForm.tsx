@@ -16,6 +16,8 @@ const styles = {
 
 interface RequestFormProps{
     onSubmit: (request: Request) => Promise<void>;
+    request?: Request;
+    buttonText?: string;
 }
 
 interface RequestFormikForm extends Request{
@@ -24,9 +26,9 @@ interface RequestFormikForm extends Request{
 }
 
 const RequestForm: FunctionComponent<RequestFormProps> = (props) => {
-    const { onSubmit } = props;
+    const { request, onSubmit, buttonText } = props;
 
-    const initialValues = {
+    const initialValues = request ? request as RequestFormikForm : {
         drugItems: [] as DrugRequestItem[],
         equipments: [] as Equipment[],
     } as RequestFormikForm;
@@ -47,7 +49,7 @@ const RequestForm: FunctionComponent<RequestFormProps> = (props) => {
                     <div>
                         <div className={styles.field}>
                             <label className={styles.label}>Name</label>
-                            <input className={styles.input} type="text" name="name" onChange={handleChange} />
+                            <input className={styles.input} type="text" name="name" onChange={handleChange} value={values.name} />
                         </div>
                         <div className={styles.field}>
                             <label className={styles.label}>Institution</label>
@@ -60,11 +62,23 @@ const RequestForm: FunctionComponent<RequestFormProps> = (props) => {
                         </div>
                         <div className={styles.field}>
                             <label className={styles.label}>Current Designation</label>
-                            <input className={styles.input} type="text" name="designation" onChange={handleChange} />
+                            <input 
+                                className={styles.input} 
+                                type="text" 
+                                name="designation" 
+                                value={values.designation}
+                                onChange={handleChange} 
+                            />
                         </div>
                         <div className={styles.field}>
                             <label className={styles.label}>Contact Number</label>
-                            <input className={styles.input} type="tel" name="contactNumber" onChange={handleChange} />
+                            <input 
+                                className={styles.input} 
+                                type="tel" 
+                                name="contactNumber" 
+                                value={values.contactNumber}
+                                onChange={handleChange} 
+                            />
                         </div>
                     </div>
                     <div className="flex-row py-4">
@@ -217,7 +231,13 @@ const RequestForm: FunctionComponent<RequestFormProps> = (props) => {
                     <div className="flex-row py-4">
                         <div className={styles.field}>
                             <label className={styles.label}>Additional Notes</label>
-                            <textarea className={styles.input} rows={4} value={values.additionalNotes} name="additionalNotes" />
+                            <textarea 
+                                className={styles.input} 
+                                rows={4} 
+                                value={values.additionalNotes} 
+                                name="additionalNotes"
+                                onChange={handleChange}
+                            />
                         </div>
                     </div>
 
@@ -228,7 +248,7 @@ const RequestForm: FunctionComponent<RequestFormProps> = (props) => {
                             onMouseDown={() => {
                                 submitForm();
                             }}
-                        >Send Request</button>
+                        >{buttonText ? buttonText : "Send Request"}</button>
                     </div>
                 </div>
             )} 

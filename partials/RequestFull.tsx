@@ -3,6 +3,7 @@ import Image from 'next/image';
 import { useRouter } from "next/router";
 import axios from "axios";
 import moment from "moment";
+import Link from "next/link";
 
 // types
 import { Request } from "../shared/types";
@@ -10,6 +11,12 @@ import { Request } from "../shared/types";
 // assets
 import DrugsIcon from "../public/drug.png";
 import EquipmentIcon from "../public/equipment.png";
+
+const styles = {
+    field: "flex flex-col gap-y-2 mb-4",
+    label: "flex-1 font-semibold",
+    input: "flex-1 px-4 py-2 border rounded-md border-zinc-300",
+}
 
 interface RequestFullProps{
     request: Request;
@@ -52,7 +59,7 @@ export const RequestFull: FunctionComponent<RequestFullProps> = ({ request } : R
                     >Print</button>
                 </div>
                 <div className="flex gap-x-2">
-                    <button className="py-1 px-2 bg-blue-1 text-white rounded-md">Edit Request</button>
+                    <Link href={`/request/${request.id}/edit`}><a className="py-1 px-2 bg-blue-1 text-white rounded-md">Edit Request</a></Link>
                     <button 
                         className="py-1 px-2 bg-rating-red text-white rounded-md"
                         onMouseDown={async () => {
@@ -126,6 +133,18 @@ export const RequestFull: FunctionComponent<RequestFullProps> = ({ request } : R
                         </table>
                     </>
                 ) : null}
+            </div>
+            <div className={`${styles.field} py-4`}>
+                <label className={styles.label}>Additional Notes</label>
+                {!request.additionalNotes ? (
+                    <p>—</p>
+                ) : (
+                    <>
+                        {request.additionalNotes.split("\n").map((para, i) => (
+                            <p key={i}>{para}</p>
+                        ))}
+                    </>
+                )}
             </div>
         </div>
     )

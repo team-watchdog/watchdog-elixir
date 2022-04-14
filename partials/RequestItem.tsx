@@ -19,7 +19,7 @@ export const RequestItem: FunctionComponent<RequestItemProps> = ({ request } : R
         <div className="flex justify-between py-4">
             <div>
                 <Link href={`/request/${request.id}`}><a href=""><h3 className="text-xl font-semibold">{request.institution?.fullName}</h3></a></Link>
-                <h4 className="text-md">{request.name} {request.designation ? <span>({request.designation})</span> : null}</h4>
+                <Link href={`/request/${request.id}`}><a href=""><h4 className="text-md">{request.name} {request.designation ? <span>({request.designation})</span> : null}</h4></a></Link>
                 <h4 className="text-md">{moment(request.createdAt).format("LLL")}</h4>
             </div>
             <div className="flex gap-x-4">

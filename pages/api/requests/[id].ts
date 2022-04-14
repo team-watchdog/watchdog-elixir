@@ -27,5 +27,20 @@ export default async function handler(
       
     }
 
+    if (req.method === "PATCH") {
+      try {
+        await elasticClient.update({
+          index: 'requests',
+          id: req.query.id,
+          doc: req.body,
+        });
+        
+        return res.status(200).json({ status: "success" });
+      } catch (e) {
+        console.log(e);
+        res.status(500).json({ status: "internal error" });
+      }
+    }
+
     res.status(404).json({ status: "failed" });
 }
