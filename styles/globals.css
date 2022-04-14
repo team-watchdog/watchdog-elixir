@@ -65,7 +65,7 @@ b{
     justify-content: space-between;
     align-items: center;
     flex-wrap: wrap;
-    padding: 8px;
+    padding: 8px 0px;
 }
 
 #languageSelector{
