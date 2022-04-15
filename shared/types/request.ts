@@ -4,6 +4,7 @@ import { Equipment } from "./equipment";
 
 export interface DrugRequestItem{
     drug: Drug;
+    originalText?: string;
     quantity?: number;
 }
 

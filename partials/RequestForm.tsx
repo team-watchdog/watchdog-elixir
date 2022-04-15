@@ -106,6 +106,7 @@ const RequestForm: FunctionComponent<RequestFormProps> = (props) => {
                                         const records = parse(rawText as string, {
                                             columns: true
                                         });
+                                        
                                         setFieldValue("csvRecords", records);
                                         setFieldValue("batchProcessing", false);
                                     });
@@ -164,7 +165,10 @@ const RequestForm: FunctionComponent<RequestFormProps> = (props) => {
                                     <tbody>
                                         {values.drugItems.map((item, i) => (
                                             <tr key={i}>
-                                                <td className="align-top">{item.drug.genericName}</td>
+                                                <td className="align-top">
+                                                    <h6>{item.drug.genericName}</h6>
+                                                    {item.originalText ? <p>{item.originalText}</p> : null}
+                                                </td>
                                                 <td className="align-top">{item.drug.brandName}</td>
                                                 <td className="align-top">{item.drug.importer.name}</td>
                                                 <td className="align-top">
