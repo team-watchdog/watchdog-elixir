@@ -22,6 +22,7 @@ export default async function handler(
 
     const resp = await elasticClient.search({
         index: 'drugs',
+        size: 100,
         query: {
           bool: {
             must: [
