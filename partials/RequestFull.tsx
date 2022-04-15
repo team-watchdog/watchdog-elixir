@@ -29,14 +29,16 @@ export const RequestFull: FunctionComponent<RequestFullProps> = ({ request } : R
         <div className="flex flex-col py-4">
             <div className="flex justify-between">
                 <div>
-                    <h3 className="text-xl font-semibold">{request.institution?.fullName}</h3>
-                    <h4 className="text-md">
-                        {request.name} 
-                        {request.designation ? <span>({request.designation})</span> : null}
-                        {request.contactNumber ? <a className="ml-2 text-blue-2 font-semibold" href={`tel:${request.contactNumber}`}>{request.contactNumber}</a> : null}
-                    </h4>
-                    <h4 className="text-md">{moment(request.createdAt).format("LLL")}</h4>
-                    <h5>ID: {request.id}</h5>
+                    <h3 className="text-xl font-semibold">{request.title ? request.title : request.institution?.fullName}</h3>
+                    <div>
+                        <div className="py-4">
+                            <h4><span className="font-semibold">Request ID:</span> {request.id}</h4>
+                            <h4><span className="font-semibold">Request Submitted On:</span> {moment(request.createdAt).format("LLL")}</h4>
+                            <Link href={`/request/${request.id}`}><a href=""><h4 className="text-md"><span className="font-semibold">Requested By:</span> {request.name}</h4></a></Link>
+                            <h4><span className="font-semibold">Requester Designation:</span> {request.designation ? <span>{request.designation}</span> : null}</h4>
+                            {request.contactNumber ? <h4><span className="font-semibold">Requester Contact Number:</span> <a className="text-blue-2 font-semibold" href={`tel:${request.contactNumber}`}>{request.contactNumber}</a></h4> : null}
+                        </div>
+                    </div>
                 </div>
                 <div className="flex gap-x-4">
                     <div className="flex items-center gap-x-2 py-2">

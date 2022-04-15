@@ -10,6 +10,7 @@ export interface DrugRequestItem{
 
 export interface Request{
     id: string;
+    title?: string;
     name?: string;
     institution?: Institution;
     designation?: string;

@@ -68,6 +68,16 @@ const RequestForm: FunctionComponent<RequestFormProps> = (props) => {
                             />
                         </div>
                         <div className={styles.field}>
+                            <label className={styles.label}>Request Title</label>
+                            <input 
+                                className={styles.input} 
+                                type="text" 
+                                name="title" 
+                                value={values.title}
+                                onChange={handleChange} 
+                            />
+                        </div>
+                        <div className={styles.field}>
                             <label className={styles.label}>Current Designation</label>
                             <input 
                                 className={styles.input} 
