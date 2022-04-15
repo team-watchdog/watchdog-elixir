@@ -24,6 +24,8 @@ export default class DrugService{
         const tmpSearchTerm = parseSearchTerm(searchTerm);
         let firstWord = tmpSearchTerm.split(" ").length > 0 ? tmpSearchTerm.split(" ")[0] : "";
 
+        console.log(tmpSearchTerm);
+
         //console.log(`${tmpSearchTerm} => ${firstWord}`);
 
         const resp = await elasticClient.search({
@@ -36,6 +38,8 @@ export default class DrugService{
             query: {
                 bool: {
                     must: [
+                    ],
+                    should: [
                         {
                             multi_match: {
                                 type: "best_fields",
@@ -46,17 +50,39 @@ export default class DrugService{
                         {
                           multi_match: {
                             query: firstWord,
+                            type: "best_fields",
                             fields: ["genericName", "brandName"],
                             fuzziness: "AUTO",
                             fuzzy_transpositions: true
                           }
+                        },
+                        {
+                            multi_match: {
+                                query: tmpSearchTerm,
+                                type: "best_fields",
+                                fields: ["aliases"],
+                                fuzziness: "AUTO",
+                                fuzzy_transpositions: true
+                            }
                         }
                     ],
-                    should: [],
                 }
             }
         });
+
+        //console.log(resp);
+
         const drugResults = resp.hits.hits.map((hit: {_source: Drug, _id: string, _score: number }) => ({ ...hit._source, id: hit._id, score: hit._score }));
         return drugResults;
+    }
+
+    static async GetDrug(id: string) {
+        const document = await elasticClient.get({
+            index: "drugs",
+            id: id,
+        });
+
+        if (document) return { ...document._source, id: document._id };
+        return null;
     }
 }

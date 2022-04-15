@@ -24,6 +24,7 @@ export const Header: FunctionComponent = () => {
                         </a>
                         <div className="right-nav hidden md:flex">
                             <a href="/" className={`navLink${path === "/" ? " active" : ""}`}>REQUESTS</a>
+                            <a href="/drugs" className={`navLink${path === "/drugs" ? " active" : ""}`}>DRUGS</a>
                             <a href="https://longform.watchdog.team/about-us" className="navLink">CONTACT US</a>
                             <a href="https://longform.watchdog.team/about-us" className="navLink">ABOUT US</a>
                         </div>

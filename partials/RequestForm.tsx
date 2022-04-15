@@ -176,8 +176,8 @@ const RequestForm: FunctionComponent<RequestFormProps> = (props) => {
                                         {values.drugItems.map((item, i) => (
                                             <tr key={i}>
                                                 <td className="align-top">
-                                                    <h6>{item.drug.genericName}</h6>
-                                                    {item.originalText ? <p>{item.originalText}</p> : null}
+                                                    {item.originalText ? <h6>{item.originalText}</h6> : null}
+                                                    <p>{item.drug.genericName}</p>
                                                 </td>
                                                 <td className="align-top">{item.drug.brandName}</td>
                                                 <td className="align-top">{item.drug.importer.name}</td>

@@ -23,7 +23,7 @@ const DrugItem: FunctionComponent<DrugItemProps> = (props: DrugItemProps) => {
         }}>
             <div className="flex flex-1 flex-col">
                 <div className="flex justify-start gap-x-2 items-center">
-                    <h6 className="break-all pr-4">{drug.genericName}</h6>
+                    <h6 className="break-all pr-4 uppercase">{drug.genericName}</h6>
                 </div>
                 <div className="py-1">
                     <p>{drug.brandName}</p>

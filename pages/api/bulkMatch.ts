@@ -49,6 +49,9 @@ export default async function handler(
             const resultsEquips = await Promise.all(promiseAllEquips);
 
             for (let i = 0; i < chunk.length; i += 1) {
+                //console.log(resultsDrugs[i]);
+                //console.log(resultsEquips[i]);
+
                 if (resultsDrugs[i].length > 0) {
                     if (resultsEquips[i].length > 0 && resultsEquips[i][0].score > resultsDrugs[i][0].score) {
                         // equipment match is better than drug match

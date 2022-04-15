@@ -1,10 +1,10 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from 'next'
 
-import { elasticClient } from "../../shared/clients/elastic";
+import { elasticClient } from "../../../shared/clients/elastic";
 
 // types
-import { Drug } from "../../shared/types";
+import { Drug } from "../../../shared/types";
 
 type Data = {
   status: unknown,
@@ -15,7 +15,9 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data>
 ) {
-    if (req.method !== "POST") res.status(406).json({ status: "invalid" });
+    if (req.method !== "POST") {
+        res.status(406).json({ status: "invalid" });
+    }
     const searchTerm = req.body && req.body.searchTerm ? req.body.searchTerm : "";
 
     const resp = await elasticClient.search({
@@ -27,7 +29,7 @@ export default async function handler(
                 multi_match: {
                   type: "best_fields",
                   query: searchTerm,
-                  fields: ["genericName", "brandName"],
+                  fields: ["genericName", "brandName", "aliases"],
                   lenient: true
                 }
               }
@@ -37,7 +39,7 @@ export default async function handler(
                 multi_match: {
                   query: searchTerm,
                   minimum_should_match: 3,
-                  fields: ["genericName", "brandName"],
+                  fields: ["genericName", "brandName", "aliases"],
                   operator: "or",
                   fuzziness: "AUTO",
                   fuzzy_transpositions: true
