@@ -96,8 +96,8 @@ export const RequestFull: FunctionComponent<RequestFullProps> = ({ request } : R
                                 {request.drugItems.map((item, i) => (
                                     <tr key={i} className="break-inside-avoid">
                                         <td className="align-top">
-                                            <h6>{item.originalText}</h6>
-                                            {item.originalText ? <p>{item.drug.genericName}</p> : null}
+                                            {item.originalText ? <h6>{item.originalText}</h6> : null}
+                                            <p>{item.drug.genericName}</p>
                                         </td>
                                         <td className="align-top">{item.drug.brandName}</td>
                                         <td className="align-top">{item.drug.importer.name}</td>
