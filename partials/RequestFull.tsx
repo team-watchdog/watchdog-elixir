@@ -151,6 +151,12 @@ export const RequestFull: FunctionComponent<RequestFullProps> = ({ request } : R
                     </>
                 )}
             </div>
+            <div className="py-4 px-6 bg-yellow-0 rounded-md mb-4">
+                <h5 className="font-semibold text-lg mb-1">Disclaimer</h5>
+                <p className="mb-2"><b className="font-semibold">Using the data:</b> Elixir attempts to match a request with data (brand and generic names, suppliers) from the NMRA lists. This match is the closest available, but will sometimes differ - for example, the closest match to a request for Metoprolol Tartrate inj. 5mgin 5ml is METOPROLOL TARTRATE TABLETS BP 50MG. We're leaving these in because it's likely that the supplier of the tablet form of the medicine will know best where to source the injection version from.</p>
+                <p className="mb-2"><b className="font-semibold">The data is presented as follows:</b> Requested generic drug (with the name of the closest match in our database under it), brand name of closest match, supplier of closest match.</p>
+                <p className="mb-2"><b className="font-semibold">Issues with data:</b> Our database is not perfect. While Elixir was able to match most requests here with their official supplier, we were not able to find all on the NMRA suppliers lists. If you find local suppliers for these unfound drugs, please drop a comment on this public spreadsheet: <a className="text-blue-1" href="https://docs.google.com/spreadsheets/d/1ysvpnOYhej0Kc7L_JwuZFalhuoRX85OcE3CeyLNK4_o/edit#gid=0">Go to spreadsheet</a></p>
+            </div>
         </div>
     )
 }

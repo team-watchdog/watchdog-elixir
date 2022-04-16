@@ -21,6 +21,7 @@ module.exports = {
       'blue-50': '#eff6ff',
       'green-tag': '#12A682',
       'yellow-1': '#E0C224',
+      'yellow-0': '#FFF6D6',
       'blue-1': '#1A4690',
       'blue-2': '#1A4DA3',
       'blue-3': '#1E54B9',
