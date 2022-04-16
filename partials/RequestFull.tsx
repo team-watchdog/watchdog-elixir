@@ -1,4 +1,4 @@
-import { FunctionComponent } from "react";
+import { FunctionComponent, useState } from "react";
 import Image from 'next/image';
 import { useRouter } from "next/router";
 import axios from "axios";
@@ -24,6 +24,9 @@ interface RequestFullProps{
 
 export const RequestFull: FunctionComponent<RequestFullProps> = ({ request } : RequestFullProps) => {
     const router = useRouter();
+
+    const [ drugSearchTerm, setDrugSearchTerm ] = useState("");
+    const [ instiuteSearchTerm, setInstituteSearchTerm ] = useState("");
 
     return (
         <div className="flex flex-col py-4">
@@ -83,6 +86,15 @@ export const RequestFull: FunctionComponent<RequestFullProps> = ({ request } : R
                 {request.drugItems.length > 0 ? (
                     <>
                         <h3 className="font-semibold text-lg py-2">Drugs</h3>
+                        <div className="flex py-4">
+                            <input 
+                                type="search" 
+                                placeholder="Filter drugs" 
+                                className="flex-1 px-4 py-2 border rounded-md border-zinc-300"
+                                onChange={(e) => setDrugSearchTerm(e.target.value)}
+                                value={drugSearchTerm}
+                            />
+                        </div>
                         <table className="table-auto w-full">
                             <thead className="w-full">
                                 <tr>
@@ -93,7 +105,7 @@ export const RequestFull: FunctionComponent<RequestFullProps> = ({ request } : R
                                 </tr>
                             </thead>
                             <tbody>
-                                {request.drugItems.map((item, i) => (
+                                {request.drugItems.filter((item) => item.drug.genericName.match(new RegExp(drugSearchTerm, "ig"))).map((item, i) => (
                                     <tr key={i} className="break-inside-avoid">
                                         <td className="align-top">
                                             {item.originalText ? <h6>{item.originalText}</h6> : null}
@@ -115,6 +127,15 @@ export const RequestFull: FunctionComponent<RequestFullProps> = ({ request } : R
                 {request.equipments.length > 0 ? (
                     <>
                         <h3 className="font-semibold text-lg py-2">Medical Equipment and Other</h3>
+                        <div className="flex py-4">
+                            <input 
+                                type="search" 
+                                placeholder="Filter equipment" 
+                                className="flex-1 px-4 py-2 border rounded-md border-zinc-300"
+                                onChange={(e) => setInstituteSearchTerm(e.target.value)}
+                                value={instiuteSearchTerm}
+                            />
+                        </div>
                         <table className="table-auto w-full">
                             <thead className="w-full">
                                 <tr>
@@ -123,7 +144,7 @@ export const RequestFull: FunctionComponent<RequestFullProps> = ({ request } : R
                                 </tr>
                             </thead>
                             <tbody>
-                                {request.equipments.map((item, i) => (
+                                {request.equipments.filter((item) => item.itemName.match(new RegExp(instiuteSearchTerm, "ig"))).map((item, i) => (
                                     <tr key={i} className="break-inside-avoid">
                                         <td className="align-top">
                                             <b>{item.itemName}</b>
