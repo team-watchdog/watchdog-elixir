@@ -1,6 +1,7 @@
 import { useState, useCallback, FunctionComponent } from 'react';
 import { debounce } from "lodash";
 import axios from "axios";
+import { NextPageContext } from "next";
 import { useRouter } from 'next/router';
 
 // partials
@@ -9,6 +10,9 @@ import Loading from "../partials/Loading";
 
 // types
 import { Drug } from "../shared/types";
+
+// utils
+import { getAuthUser, RequestWithCookie } from '../middleware/utils';
 
 const BUCKET_URI = process.env.NEXT_PUBLIC_STATIC_BUCKET_URI;
 
@@ -133,5 +137,24 @@ const Drugs = (props: DrugsProps) => {
     </div>
   )
 }
+
+export const getServerSideProps = async ({ req, query }: NextPageContext) => {
+    const account = getAuthUser(req as RequestWithCookie);
+    if (!account) {
+        return {
+            redirect: {
+                destination: `/`,
+                permanent: false,
+            },
+          }
+    }
+
+    return {
+        props: {
+            account,
+        }
+    }
+}
+
 
 export default Drugs;

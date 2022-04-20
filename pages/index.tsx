@@ -13,6 +13,9 @@ import RequestsService from "../shared/services/requests.service";
 // types
 import { Request } from "../shared/types";
 
+// utils
+import { RequestWithCookie, getAuthUser } from "../middleware/utils";
+
 const BUCKET_URI = process.env.NEXT_PUBLIC_STATIC_BUCKET_URI;
 
 interface HomeProps {
@@ -21,10 +24,11 @@ interface HomeProps {
   page: number;
   limit: number;
   searchTerm: string;
+  user: unknown;
 }
 
 const Home = (props: HomeProps) => {
-  const { requests, count, page, limit, searchTerm } = props;
+  const { requests, count, page, limit, searchTerm, user } = props;
 
   const [ term, setTerm ] = useState(searchTerm);
   const router = useRouter();
@@ -87,7 +91,9 @@ const Home = (props: HomeProps) => {
   )
 }
 
-export const getServerSideProps = async ({ query }: NextPageContext) => {
+export const getServerSideProps = async ({ req, query }: NextPageContext) => {
+  const account = getAuthUser(req as RequestWithCookie);
+
   const page = query && query.page ? parseInt(query.page as string) : 0;
   const limit = query && query.limit ? parseInt(query.limit as string) : 10;
   const searchTerm = query && query.searchTerm ? query.searchTerm as string: "";
@@ -95,7 +101,19 @@ export const getServerSideProps = async ({ query }: NextPageContext) => {
   let resp;
 
   try {
-    resp = await RequestsService.GetRequests(searchTerm, page, limit);
+    const tmpResp = await RequestsService.GetRequests(searchTerm, page, limit);
+    const sanitizedRequests = tmpResp.requestsResults.map((request: Request) => {
+      return {
+        ...request,
+        name: "*****",
+        contactNumber: "********",
+      }
+    });
+
+    resp = {
+      ...tmpResp,
+      requestsResults: sanitizedRequests,
+    }
   } catch (e) {
     console.log(e);
   }
@@ -107,6 +125,7 @@ export const getServerSideProps = async ({ query }: NextPageContext) => {
       page,
       limit,
       searchTerm,
+      account,
     }
   }
 }

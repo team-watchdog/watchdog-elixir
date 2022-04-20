@@ -13,7 +13,7 @@ const CreateRequest: FunctionComponent = () => {
 
     return (
         <div>
-            <HeadMeta 
+            <HeadMeta
                 title="Watchdog — An open source research collective."
                 description="Watchdog is a multidisciplinary team of factcheckers, journalists, researchers and software engineers. We hunt hoaxes and misinformation, investigate matters of public welfare, and build software tools that help operations like ours."
                 image={`${BUCKET_URI}/meta-blue.png`}

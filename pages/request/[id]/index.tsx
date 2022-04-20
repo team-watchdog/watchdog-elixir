@@ -5,24 +5,28 @@ import { NextPageContext } from 'next';
 import RequestsService from "../../../shared/services/requests.service";
 
 // types
-import { Request } from "../../../shared/types";
+import { Request, Account } from "../../../shared/types";
 
 // partials
 import { RequestFull } from "../../../partials/RequestFull";
 
+// utils
+import { RequestWithCookie, getAuthUser } from "../../../middleware/utils";
+
 interface SingleRequestProps{
     request: Request;
+    account: Account | null;
 }
 
 const SingleRequest: FunctionComponent<SingleRequestProps> = (props) => {
-    const { request } = props;
+    const { request, account } = props;
 
     return (
         <div>
             <main>
                 <div className="container">
                     <div className="py-4">
-                        <RequestFull request={request} />
+                        <RequestFull request={request} account={account} />
                     </div>
                 </div>
             </main>
@@ -30,12 +34,19 @@ const SingleRequest: FunctionComponent<SingleRequestProps> = (props) => {
     )
 }
 
-export const getServerSideProps = async ({ params } : { params: { id: string } }) => {
+export const getServerSideProps = async ({ req, params } : { req: RequestWithCookie, params: { id: string } }) => {
+    const account = getAuthUser(req as RequestWithCookie);
+    
     let request;
 
     try {
-        request = await RequestsService.GetRequest(params.id);
-        console.log(request);
+        const tmpRequest = await RequestsService.GetRequest(params.id);
+
+        request = {
+            ...tmpRequest,
+            name: "*****",
+            contactNumber: "********",
+        }
     } catch (e) {
         return e;
     }
@@ -43,6 +54,7 @@ export const getServerSideProps = async ({ params } : { params: { id: string } }
     return {
         props: {
             request,
+            account,
         }
     }
 };

@@ -6,6 +6,9 @@ import { useRouter } from "next/router";
 import HeadMeta from "../partials/HeadMeta";
 import EquipmentForm from "../partials/EquipmentForm";
 
+// utils
+import { getAuthUser, RequestWithCookie } from '../middleware/utils';
+
 const BUCKET_URI = process.env.NEXT_PUBLIC_STATIC_BUCKET_URI;
 
 const NewEquipment: FunctionComponent = () => {
@@ -40,6 +43,23 @@ const NewEquipment: FunctionComponent = () => {
             </main>
         </div>
     )
+}
+
+export const getServerSideProps = async ({ params, req } : { params: { id: string }, req: RequestWithCookie }) => {
+    const account = getAuthUser(req as RequestWithCookie);
+    if (!account) {
+        return {
+            redirect: {
+                destination: `/`,
+                permanent: false,
+            },
+          }
+    }
+    return {
+        props: {
+            account,
+        }
+    }
 }
 
 export default NewEquipment;

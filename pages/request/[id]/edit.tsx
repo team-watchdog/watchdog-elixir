@@ -11,6 +11,9 @@ import { Request } from "../../../shared/types";
 // partials
 import RequestForm from "../../../partials/RequestForm";
 
+// utils
+import { RequestWithCookie, getAuthUser } from "../../../middleware/utils";
+
 interface SingleRequestProps{
     request: Request;
 }
@@ -48,7 +51,17 @@ const SingleRequest: FunctionComponent<SingleRequestProps> = (props) => {
     )
 }
 
-export const getServerSideProps = async ({ params } : { params: { id: string } }) => {
+export const getServerSideProps = async ({ params, req } : { params: { id: string }, req: RequestWithCookie }) => {
+    const account = getAuthUser(req);
+    if (!account) {
+        return {
+            redirect: {
+                destination: `/request/${params.id}`,
+                permanent: false,
+            },
+          }
+    }
+
     let request;
 
     try {

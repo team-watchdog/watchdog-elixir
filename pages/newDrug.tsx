@@ -6,9 +6,12 @@ import { useRouter } from "next/router";
 import HeadMeta from "../partials/HeadMeta";
 import DrugForm from "../partials/DrugForm";
 
+// utils
+import { getAuthUser, RequestWithCookie } from '../middleware/utils';
+
 const BUCKET_URI = process.env.NEXT_PUBLIC_STATIC_BUCKET_URI;
 
-const CreateRequest: FunctionComponent = () => {
+const NewDrug: FunctionComponent = () => {
     const router = useRouter();
 
     return (
@@ -42,4 +45,21 @@ const CreateRequest: FunctionComponent = () => {
     )
 }
 
-export default CreateRequest;
+export const getServerSideProps = async ({ params, req } : { params: { id: string }, req: RequestWithCookie }) => {
+    const account = getAuthUser(req as RequestWithCookie);
+    if (!account) {
+        return {
+            redirect: {
+                destination: `/`,
+                permanent: false,
+            },
+          }
+    }
+    return {
+        props: {
+            account,
+        }
+    }
+}
+
+export default NewDrug;

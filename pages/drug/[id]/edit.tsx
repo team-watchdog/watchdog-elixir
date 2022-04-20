@@ -12,6 +12,9 @@ import { Drug } from "../../../shared/types";
 import DrugForm from "../../../partials/DrugForm";
 import DrugService from "../../../shared/services/drugs.service";
 
+// utils
+import { getAuthUser, RequestWithCookie } from '../../../middleware/utils';
+
 interface SingleDrugProps{
     drug: Drug;
 }
@@ -49,9 +52,19 @@ const SingleDrug: FunctionComponent<SingleDrugProps> = (props) => {
     )
 }
 
-export const getServerSideProps = async ({ params } : { params: { id: string } }) => {
-    let drug;
+export const getServerSideProps = async ({ params, req } : { params: { id: string }, req: RequestsService }) => {
+    const account = getAuthUser(req as RequestWithCookie);
+    if (!account) {
+        return {
+            redirect: {
+                destination: `/`,
+                permanent: false,
+            },
+          }
+    }
 
+    let drug;
+    
     try {
         drug = await DrugService.GetDrug(params.id);
         console.log(drug);

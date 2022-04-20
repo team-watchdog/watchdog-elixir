@@ -6,7 +6,7 @@ import moment from "moment";
 import Link from "next/link";
 
 // types
-import { Request } from "../shared/types";
+import { Request, Account } from "../shared/types";
 
 // assets
 import DrugsIcon from "../public/drug.png";
@@ -20,9 +20,10 @@ const styles = {
 
 interface RequestFullProps{
     request: Request;
+    account: Account | null;
 }
 
-export const RequestFull: FunctionComponent<RequestFullProps> = ({ request } : RequestFullProps) => {
+export const RequestFull: FunctionComponent<RequestFullProps> = ({ request, account } : RequestFullProps) => {
     const router = useRouter();
 
     const [ drugSearchTerm, setDrugSearchTerm ] = useState("");
@@ -54,48 +55,52 @@ export const RequestFull: FunctionComponent<RequestFullProps> = ({ request } : R
                     </div>
                 </div>
             </div>
-            <div className="flex justify-between py-2 mt-2">
-                <div>
-                    <button 
-                        className="py-1 px-2 bg-zinc-700 text-white rounded-md"
-                        onMouseDown={() => {
-                            window.print();
-                        }}
-                    >Print</button>
-                </div>
-                <div className="flex gap-x-2">
-                    <Link href={`/request/${request.id}/edit`}><a className="py-1 px-2 bg-blue-1 text-white rounded-md">Edit Request</a></Link>
-                    <button 
-                        className="py-1 px-2 bg-rating-red text-white rounded-md"
-                        onMouseDown={async () => {
-                            const response = confirm("Are you sure you want to delete this request?");
+            {account ? (
+                <div className="flex justify-between py-2 mt-2">
+                    <div>
+                        <button 
+                            className="py-1 px-2 bg-zinc-700 text-white rounded-md"
+                            onMouseDown={() => {
+                                window.print();
+                            }}
+                        >Print</button>
+                    </div>
+                    <div className="flex gap-x-2">
+                        <Link href={`/request/${request.id}/edit`}><a className="py-1 px-2 bg-blue-1 text-white rounded-md">Edit Request</a></Link>
+                        <button 
+                            className="py-1 px-2 bg-rating-red text-white rounded-md"
+                            onMouseDown={async () => {
+                                const response = confirm("Are you sure you want to delete this request?");
 
-                            if (response) {
-                                try {
-                                    await axios.delete(`/api/requests/${request.id}`);
-                                    router.push("/");
-                                } catch (e) {
-                                    console.log(e);
+                                if (response) {
+                                    try {
+                                        await axios.delete(`/api/requests/${request.id}`);
+                                        router.push("/");
+                                    } catch (e) {
+                                        console.log(e);
+                                    }
                                 }
-                            }
-                        }}
-                    >Delete Request</button>
+                            }}
+                        >Delete Request</button>
+                    </div>
                 </div>
-            </div>
+            ) : null}
             <div className="flex flex-col py-2">
                 {request.drugItems.length > 0 ? (
                     <>
-                        <h3 className="font-semibold text-lg py-2">Drugs</h3>
-                        <div className="flex py-4">
-                            <input 
-                                type="search" 
-                                placeholder="Filter drugs" 
-                                className="flex-1 px-4 py-2 border rounded-md border-zinc-300"
-                                onChange={(e) => setDrugSearchTerm(e.target.value)}
-                                value={drugSearchTerm}
-                            />
+                        <div className="sticky top-16 bg-white pt-4">
+                            <h3 className="font-semibold text-lg py-2">Drugs</h3>
+                            <div className="flex py-4">
+                                <input 
+                                    type="search" 
+                                    placeholder="Filter drugs" 
+                                    className="flex-1 px-4 py-2 border rounded-md border-zinc-300"
+                                    onChange={(e) => setDrugSearchTerm(e.target.value)}
+                                    value={drugSearchTerm}
+                                />
+                            </div>
                         </div>
-                        <table className="table-auto w-full">
+                        <table className="table-fixed w-full">
                             <thead className="w-full">
                                 <tr>
                                     <th>Generic Name</th>
@@ -126,17 +131,19 @@ export const RequestFull: FunctionComponent<RequestFullProps> = ({ request } : R
             <div className="flex flex-col py-2">
                 {request.equipments.length > 0 ? (
                     <>
-                        <h3 className="font-semibold text-lg py-2">Medical Equipment and Other</h3>
-                        <div className="flex py-4">
-                            <input 
-                                type="search" 
-                                placeholder="Filter equipment" 
-                                className="flex-1 px-4 py-2 border rounded-md border-zinc-300"
-                                onChange={(e) => setInstituteSearchTerm(e.target.value)}
-                                value={instiuteSearchTerm}
-                            />
+                        <div className="sticky top-16 bg-white pt-4">
+                            <h3 className="font-semibold text-lg py-2">Medical Equipment and Other</h3>
+                            <div className="flex py-4">
+                                <input 
+                                    type="search" 
+                                    placeholder="Filter equipment" 
+                                    className="flex-1 px-4 py-2 border rounded-md border-zinc-300"
+                                    onChange={(e) => setInstituteSearchTerm(e.target.value)}
+                                    value={instiuteSearchTerm}
+                                />
+                            </div>
                         </div>
-                        <table className="table-auto w-full">
+                        <table className="table-fixed w-full">
                             <thead className="w-full">
                                 <tr>
                                     <th>Name</th>

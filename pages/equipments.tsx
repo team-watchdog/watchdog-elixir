@@ -1,5 +1,6 @@
 import { useState, useCallback, FunctionComponent } from 'react';
-import { debounce, result } from "lodash";
+import { NextPageContext } from "next";
+import { debounce } from "lodash";
 import axios from "axios";
 import { useRouter } from 'next/router';
 
@@ -12,6 +13,9 @@ import { EquipmentResult } from "../shared/types";
 import { Button } from '../partials/Button';
 import Link from 'next/link';
 
+// utils
+import { getAuthUser, RequestWithCookie } from '../middleware/utils';
+
 const BUCKET_URI = process.env.NEXT_PUBLIC_STATIC_BUCKET_URI;
 
 interface ChangeListener{
@@ -19,7 +23,6 @@ interface ChangeListener{
         value: string
     }
 }
-
 
 interface EquipmentItemProps{
     equipment: EquipmentResult;
@@ -146,5 +149,24 @@ const Equipments = (props: EquipmentsProps) => {
     </div>
   )
 }
+
+export const getServerSideProps = async ({ req, query }: NextPageContext) => {
+    const account = getAuthUser(req as RequestWithCookie);
+    if (!account) {
+        return {
+            redirect: {
+                destination: `/`,
+                permanent: false,
+            },
+          }
+    }
+
+    return {
+        props: {
+            account,
+        }
+    }
+}
+
 
 export default Equipments;
