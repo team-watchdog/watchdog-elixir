@@ -64,16 +64,21 @@ class AdminService{
             });
 
             // Send Email
-            sgMail.setApiKey(SENDGRID_API_KEY);
-            sgMail.send({
-                to: account.email,
-                from: 'contact@appendix.tech',
-                subject: 'Watchdog Elixir: Reset your password',
-                templateId: "d-49d490f41d9d4fa38f977152a9d42c86",
-                dynamicTemplateData: {
-                    passwordResetLink: `${APP_HOST_URL}/auth/resetPassword?resetToken=${resetToken}&accountId=${account.id}`,
-                },
-            });
+            try {
+                sgMail.setApiKey(SENDGRID_API_KEY);
+                sgMail.send({
+                    to: account.email,
+                    from: 'contact@appendix.tech',
+                    subject: 'Watchdog Elixir: Reset your password',
+                    templateId: "d-49d490f41d9d4fa38f977152a9d42c86",
+                    dynamicTemplateData: {
+                        passwordResetLink: `${APP_HOST_URL}/auth/resetPassword?resetToken=${resetToken}&accountId=${account.id}`,
+                    },
+                });
+            } catch (e) {
+                console.log("EMAIL ERROR");
+                console.log(e);
+            }
 
             console.log(`RESET CODE = ${resetToken}`);
             
