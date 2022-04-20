@@ -14,7 +14,7 @@ import RequestsService from "../shared/services/requests.service";
 import { Request } from "../shared/types";
 
 // utils
-import { RequestWithCookie, getAuthUser } from "../middleware/utils";
+import { RequestWithCookie, getAuthUser, SignedPayload } from "../middleware/utils";
 
 const BUCKET_URI = process.env.NEXT_PUBLIC_STATIC_BUCKET_URI;
 
@@ -92,7 +92,7 @@ const Home = (props: HomeProps) => {
 }
 
 export const getServerSideProps = async ({ req, query }: NextPageContext) => {
-  const account = getAuthUser(req as RequestWithCookie);
+  const account = getAuthUser(req as RequestWithCookie) as SignedPayload;
 
   const page = query && query.page ? parseInt(query.page as string) : 0;
   const limit = query && query.limit ? parseInt(query.limit as string) : 10;
@@ -105,8 +105,8 @@ export const getServerSideProps = async ({ req, query }: NextPageContext) => {
     const sanitizedRequests = tmpResp.requestsResults.map((request: Request) => {
       return {
         ...request,
-        name: "*****",
-        contactNumber: "********",
+        name: account && account.type === "ADMIN" ? request.name : "*****",
+        contactNumber: account && account.type === "ADMIN" ? request.contactNumber :"********",
       }
     });
 
