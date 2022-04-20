@@ -43,8 +43,8 @@ export const getServerSideProps = async ({ req, params } : { req: RequestWithCoo
         const tmpRequest = await RequestsService.GetRequest(params.id);
         return {
             ...tmpRequest,
-            name: account && account.type === "ADMIN" ? tmpRequest.name : "*****",
-            contactNumber: account && account.type === "ADMIN" ? tmpRequest.contactNumber :"********",
+            name: account ? tmpRequest.name : "*****",
+            contactNumber: account ? tmpRequest.contactNumber :"********",
         }
     } catch (e) {
         return e;

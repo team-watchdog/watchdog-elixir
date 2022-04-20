@@ -105,8 +105,8 @@ export const getServerSideProps = async ({ req, query }: NextPageContext) => {
     const sanitizedRequests = tmpResp.requestsResults.map((request: Request) => {
       return {
         ...request,
-        name: account && account.type === "ADMIN" ? request.name : "*****",
-        contactNumber: account && account.type === "ADMIN" ? request.contactNumber :"********",
+        name: account ? request.name : "*****",
+        contactNumber: account ? request.contactNumber :"********",
       }
     });
 
