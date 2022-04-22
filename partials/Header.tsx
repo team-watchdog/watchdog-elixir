@@ -41,7 +41,7 @@ export const Header: FunctionComponent<HeaderProps> = ({ account }: HeaderProps)
                             {account ? <a href="/drugs" className={`navLink${path === "/drugs" ? " active" : ""}`}>DRUGS</a> : null}
                             {account ? <a href="/equipments" className={`navLink${path === "/equipments" ? " active" : ""}`}>EQUIPMENT</a> : null}
                             {account && account.type === "ADMIN" ? <a href="/accounts" className={`navLink${path === "/accounts" ? " active" : ""}`}>ACCOUNTS</a> : null}
-                            <a href="https://longform.watchdog.team/about-us" className="navLink">CONTRIBUTE</a>
+                            <a href="https://longform.watchdog.team/data-projects/how-to-donate-to-the-sri-lankan-medical-crisis" className="navLink">CONTRIBUTE</a>
                             <a href="/myPledge" className={`navLink${path === "/myPledge" ? " active" : ""}`}>My Pledge <span className="px-2 py-1 bg-white text-zinc-700 rounded-md ml-1">{pledgeCount}</span></a>
                             {account ? <a href="/auth/signout" className="navLink font-bold">SIGN OUT</a> : <a href="/auth/signin" className="navLink font-bold">SIGN IN</a>}
                         </div>
