@@ -5,3 +5,5 @@ export * from "./equipment";
 export * from "./account";
 export * from "./errorResponse";
 export * from "./auth";
+export * from "./file";
+export * from "./pledge";

@@ -2,6 +2,8 @@ import axios from "axios";
 import { FunctionComponent } from "react";
 import { Formik, FormikErrors } from "formik";
 import { parse } from 'csv-parse/browser/esm/sync';
+import { Switch } from "@mantine/core";
+import { TrashIcon } from "@heroicons/react/outline"
 
 // partials
 import DrugSearch from "./DrugSearch";
@@ -97,6 +99,10 @@ const RequestForm: FunctionComponent<RequestFormProps> = (props) => {
                                 onChange={handleChange} 
                             />
                         </div>
+                        <div className={`${styles.field} mb-2`}>
+                            <label className={styles.label}>Approved</label>
+                            <Switch size="lg"/>
+                        </div>
                     </div>
                     <div className={`${styles.field} bg-zinc-100 py-4 px-4 rounded-md`}>
                         <label className={styles.label}>Upload Request CSV</label>
@@ -165,7 +171,7 @@ const RequestForm: FunctionComponent<RequestFormProps> = (props) => {
                                 <table className="table-auto w-full">
                                     <thead className="w-full">
                                         <tr>
-                                            <th>Generic Name</th>
+                                            <th colSpan={2}>Generic Name</th>
                                             <th>Brand Name</th>
                                             <th>Importer</th>
                                             <th>Quantity</th>
@@ -174,21 +180,23 @@ const RequestForm: FunctionComponent<RequestFormProps> = (props) => {
                                     </thead>
                                     <tbody>
                                         {values.drugItems.map((item, i) => (
-                                            <tr key={i}>
-                                                <td className="align-top">
+                                            <tr key={i} className="break-inside-avoid">
+                                                <td className="align-top" colSpan={2}>
                                                     {item.originalText ? <h6>{item.originalText}</h6> : null}
                                                     <p>{item.drug.genericName}</p>
                                                 </td>
-                                                <td className="align-top">{item.drug.brandName}</td>
-                                                <td className="align-top">{item.drug.importer.name}</td>
+                                                <td className="align-top">{item.drug.brandName ? item.drug.brandName : "—"}</td>
+                                                <td className="align-top">{item.drug.importer.name ? item.drug.importer.name : "—"}</td>
                                                 <td className="align-top">
-                                                    <input 
-                                                        type="number" 
-                                                        className="bg-zinc-100 px-3 py-2 rounded-md flex-1"
-                                                        name={`drugItems["${i}"].quantity`}
-                                                        value={item.quantity}
-                                                        onChange={handleChange}
-                                                    />
+                                                    <div className="flex">
+                                                        <input 
+                                                            type="number" 
+                                                            className="bg-zinc-100 px-3 py-2 rounded-md flex-1"
+                                                            name={`drugItems["${i}"].quantity`}
+                                                            value={item.quantity}
+                                                            onChange={handleChange}
+                                                        />
+                                                    </div>
                                                 </td>
                                                 <td className="align-top">
                                                     <button 
@@ -200,7 +208,7 @@ const RequestForm: FunctionComponent<RequestFormProps> = (props) => {
                                                             ];
                                                             setFieldValue("drugItems", updatedList);
                                                         }}
-                                                    >Remove</button>
+                                                    ><TrashIcon width={18} height={18} /></button>
                                                 </td>
                                             </tr>
                                         ))}
@@ -258,7 +266,7 @@ const RequestForm: FunctionComponent<RequestFormProps> = (props) => {
                                                         ];
                                                         setFieldValue("equipments", updatedList);
                                                     }}
-                                                >Remove</button>
+                                                ><TrashIcon width={18} height={18} /></button>
                                             </td>
                                         </tr>
                                     ))}

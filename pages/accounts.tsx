@@ -53,7 +53,7 @@ const Accounts = (props: AccountsProps) => {
             <a href="/newDrug" className="py-2 px-4 bg-zinc-700 text-white rounded-md" onMouseDown={() => setShowCreateAccountModal(true)}>New Account</a>
           </div>
           <div>
-            <Table className="w-full" fontSize={16}>
+            <table className="w-full">
                 <thead className="w-full">
                     <th>Full Name</th>
                     <th>Email</th>
@@ -80,7 +80,7 @@ const Accounts = (props: AccountsProps) => {
                         </tr>
                     ))}
                 </tbody>
-            </Table>
+            </table>
           </div>
         </div>
       </main>

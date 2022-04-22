@@ -1,8 +1,8 @@
-import { FunctionComponent } from "react";
+import { FunctionComponent, ReactChild } from "react";
 import { TailSpin } from "react-loader-spinner";
 
 interface ButtonProps{
-    label: string;
+    label: ReactChild;
     submitting?: boolean;
     disabled?: boolean;
     type?: "primary" | "default" | "danger";
@@ -18,11 +18,11 @@ export const Button: FunctionComponent<ButtonProps> = (props) => {
     
     return (
         <button 
-            className={`flex items-center gap-x-2 py-2 px-2 rounded-md ${colorClasses}`}
+            className={`flex font-ui items-center gap-x-2 py-2 px-2 rounded-md ${colorClasses} justify-between flex-row ${disabled ? "opacity-60" : "opacity-100"}`}
             onMouseDown={onMouseDown}
             disabled={disabled || submitting}
         >
-            {submitting ? <TailSpin color="white" height={18} width={18} /> : null}<span>{label}</span>
+            {submitting ? <TailSpin color="white" height={18} width={18} /> : null}{label}
         </button>
     )
 }
