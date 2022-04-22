@@ -205,7 +205,7 @@ export const RequestFull: FunctionComponent<RequestFullProps> = ({ request, acco
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    {request.drugItems.filter((item) => item.drug.genericName.match(new RegExp(drugSearchTerm.replace("\\", ""), "ig"))).map((item, i) => (
+                                                    {request.drugItems.filter((item) => item.drug.genericName.match(new RegExp(drugSearchTerm.replace(/\\/ig, ""), "ig"))).map((item, i) => (
                                                         <tr key={i} className="break-inside-avoid">
                                                             <td className="align-top" colSpan={2}>
                                                                 {item.originalText ? <h6 className="font-semibold">{item.originalText}</h6> : null}
@@ -268,7 +268,7 @@ export const RequestFull: FunctionComponent<RequestFullProps> = ({ request, acco
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    {request.equipments.filter((item) => item.itemName.match(new RegExp(instiuteSearchTerm, "ig"))).map((item, i) => (
+                                                    {request.equipments.filter((item) => item.itemName.match(new RegExp(instiuteSearchTerm.replace(/\\/ig, ""), "ig"))).map((item, i) => (
                                                         <tr key={i} className="break-inside-avoid">
                                                             <td className="align-top">
                                                                 <b>{item.itemName}</b>
