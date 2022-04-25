@@ -38,6 +38,7 @@ export const Header: FunctionComponent<HeaderProps> = ({ account }: HeaderProps)
                         </a>
                         <div className="right-nav hidden md:flex">
                             <a href="/" className={`navLink${path === "/" ? " active" : ""}`}>REQUESTS</a>
+                            <a href="/pledges" className={`navLink${path === "/pledges" ? " active" : ""}`}>PLEDGES</a>
                             {account ? <a href="/drugs" className={`navLink${path === "/drugs" ? " active" : ""}`}>DRUGS</a> : null}
                             {account ? <a href="/equipments" className={`navLink${path === "/equipments" ? " active" : ""}`}>EQUIPMENT</a> : null}
                             {account && account.type === "ADMIN" ? <a href="/accounts" className={`navLink${path === "/accounts" ? " active" : ""}`}>ACCOUNTS</a> : null}
