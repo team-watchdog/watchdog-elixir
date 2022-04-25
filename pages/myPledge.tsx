@@ -1,7 +1,8 @@
 import { FunctionComponent } from "react";
 import { NextPageContext } from "next";
-import { Formik } from "formik";
+import { Formik, FormikErrors } from "formik";
 import { TrashIcon } from "@heroicons/react/outline";
+import isEmail from "validator/lib/isEmail";
 
 // partials
 import SectionHeader from "../partials/SectionHeader";
@@ -26,6 +27,10 @@ import axios from "axios";
 interface PledgeForm extends Pledge{
     newEquipmentName: string;
     newEquipmentNotes: string;
+}
+
+const RequiredMark: FunctionComponent = () => {
+    return <span className="text-rating-red">*</span>
 }
 
 const MyPledge: FunctionComponent = () => {
@@ -58,26 +63,50 @@ const MyPledge: FunctionComponent = () => {
                             />
                         )}
                     />
+                    <div className="py-2 px-4 bg-slate-200 mt-4 mb-2 rounded-md">
+                        <p className="py-1">When you make a pledge, your request will be routed to the coordinator at the Ministry of Health, the original requesters, and other aid organizations inside our network via email. You will be copied to this email and you can reply directly to get in touch with these parties.</p>
+                        <p className="py-1">Your pledge will also appear in the "Pledges" section of this website with your contact details anonymized. However, your contact details will be available to organizations inside our network with administrator access.</p>
+                    </div>
                     <div className="flex flex-row">
                         <Formik
                             initialValues={initialValues}
-                            onSubmit={(values) => {
-                                console.log(values);
+                            onSubmit={async (values, { setSubmitting }) => {
+                                try {
+                                    setSubmitting(true);
+                                    await axios.post("/api/createPledge", values);
+                                    resetPledge();
+                                    router.push("/pledgeSuccess");
+                                } catch (e) {
+                                    console.log(e);
+                                }
+                                resetPledge();
+                            }}
+                            validate={(values) => {
+                                const errors: FormikErrors<PledgeForm> = {};
+                                
+                                if (!values.name) errors.name = "Name required";
+                                
+                                if (!values.email) errors.email = "Email is required";
+                                else if (!isEmail(values.email)) errors.email = "Please enter a valid email";
+                                
+                                if (!values.phoneNumber) errors.phoneNumber = "Phone number required";
+
+                                return errors;
                             }}
                         >
-                            {({ values, setFieldValue, handleChange, setSubmitting, isSubmitting }) => (
+                            {({ values, errors, setFieldValue, handleChange, isSubmitting, submitForm }) => (
                                 <div className="flex-1 py-6">
                                     <div className={formClassNames.field}>
-                                        <label className={formClassNames.label}>Name</label>
-                                        <input className={formClassNames.input} type="text" name="name" onChange={handleChange} value={values.name} />
+                                        <label className={formClassNames.label}>Name <RequiredMark /></label>
+                                        <input className={`${formClassNames.input}${errors.name ? " border border-rating-red" : ""}`} type="text" name="name" onChange={handleChange} value={values.name} />
                                     </div>
                                     <div className={formClassNames.field}>
-                                        <label className={formClassNames.label}>Email</label>
-                                        <input className={formClassNames.input} type="email" name="email" onChange={handleChange} value={values.email} />
+                                        <label className={formClassNames.label}>Email <RequiredMark /></label>
+                                        <input className={`${formClassNames.input}${errors.email ? " border border-rating-red" : ""}`}  type="email" name="email" onChange={handleChange} value={values.email} />
                                     </div>
                                     <div className={formClassNames.field}>
-                                        <label className={formClassNames.label}>Phone</label>
-                                        <input className={formClassNames.input} type="phone" name="phoneNumber" onChange={handleChange} value={values.phoneNumber} />
+                                        <label className={formClassNames.label}>Phone <RequiredMark /></label>
+                                        <input className={`${formClassNames.input}${errors.phoneNumber ? " border border-rating-red" : ""}`}  type="phone" name="phoneNumber" onChange={handleChange} value={values.phoneNumber} />
                                     </div>
                                     <div className={formClassNames.field}>
                                         <label className={formClassNames.label}>Notes</label>
@@ -276,17 +305,8 @@ const MyPledge: FunctionComponent = () => {
                                             type="primary"
                                             label="Submit Pledge"
                                             submitting={isSubmitting}
-                                            onMouseDown={async () => {
-                                                try {
-                                                    setSubmitting(true);
-                                                    await axios.post("/api/createPledge", values);
-                                                    resetPledge();
-                                                    router.push("/pledgeSuccess");
-                                                } catch (e) {
-                                                    console.log(e);
-                                                }
-                                                resetPledge();
-                                            }}
+                                            disabled={errors.email || errors.name || errors.phoneNumber ? true : false}
+                                            onMouseDown={submitForm}
                                         />
                                     </div>
                                 </div>
