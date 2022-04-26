@@ -17,6 +17,7 @@ export interface Request{
     createdAt?: Date;
     updatedAt?: Date;
     contactNumber?: string;
+    email?: string;
     drugItems: DrugRequestItem[];
     equipments: Equipment[];
     additionalNotes: string;

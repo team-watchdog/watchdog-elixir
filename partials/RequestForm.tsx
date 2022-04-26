@@ -4,11 +4,13 @@ import { Formik, FormikErrors } from "formik";
 import { parse } from 'csv-parse/browser/esm/sync';
 import { Switch } from "@mantine/core";
 import { TrashIcon } from "@heroicons/react/outline"
+import isEmail from "validator/lib/isEmail";
 
 // partials
 import DrugSearch from "./DrugSearch";
 import InstitutionSearch from "./InstitutionSearch";
 import { Button } from "./Button";
+import { RequiredMark } from "./RequiredMark";
 
 // types
 import { Request, DrugRequestItem, Equipment } from "../shared/types";
@@ -46,6 +48,19 @@ const RequestForm: FunctionComponent<RequestFormProps> = (props) => {
         <div className="flex flex-1">
         <Formik
             initialValues={initialValues}
+            validate={(values) => {
+                const errors: FormikErrors<RequestFormikForm> = {};
+
+                if (!values.name) errors.name = "Your name is required";
+                if (!values.designation) errors.designation = "Designation is required";
+                
+                if (!values.email) errors.email = "Email is required";
+                else if (!isEmail(values.email)) errors.email = "Please enter a valid email";
+
+                if (!values.contactNumber) errors.contactNumber = "Contact number is required";
+
+                return errors;
+            }}
             onSubmit={async (values, { setSubmitting }) => {
                 setSubmitting(true);
                 let parsedValues: Request = values;
@@ -53,12 +68,15 @@ const RequestForm: FunctionComponent<RequestFormProps> = (props) => {
                 setSubmitting(false);
             }}
         >
-            {({ values, setFieldValue, handleChange, isSubmitting, submitForm }) => (
+            {({ values, errors, setFieldValue, handleChange, isSubmitting, isValid, submitForm }) => (
                 <div className="flex-1 py-2">
                     <div>
                         <div className={styles.field}>
-                            <label className={styles.label}>Name</label>
-                            <input className={styles.input} type="text" name="name" onChange={handleChange} value={values.name} />
+                            <label className={styles.label}>Your name <RequiredMark /></label>
+                            <input 
+                                className={`${styles.input}${errors.name ? " border border-rating-red" : ""}`}
+                                type="text" name="name" onChange={handleChange} value={values.name} 
+                            />
                         </div>
                         <div className={styles.field}>
                             <label className={styles.label}>Institution</label>
@@ -80,9 +98,9 @@ const RequestForm: FunctionComponent<RequestFormProps> = (props) => {
                             />
                         </div>
                         <div className={styles.field}>
-                            <label className={styles.label}>Current Designation</label>
+                            <label className={styles.label}>Current Designation <RequiredMark /></label>
                             <input 
-                                className={styles.input} 
+                                className={`${styles.input}${errors.designation ? " border border-rating-red" : ""}`}
                                 type="text" 
                                 name="designation" 
                                 value={values.designation}
@@ -90,19 +108,31 @@ const RequestForm: FunctionComponent<RequestFormProps> = (props) => {
                             />
                         </div>
                         <div className={styles.field}>
-                            <label className={styles.label}>Contact Number</label>
+                            <label className={styles.label}>Contact Number <RequiredMark /></label>
                             <input 
-                                className={styles.input} 
+                                className={`${styles.input}${errors.contactNumber ? " border border-rating-red" : ""}`}
                                 type="tel" 
                                 name="contactNumber" 
                                 value={values.contactNumber}
                                 onChange={handleChange} 
                             />
                         </div>
+                        <div className={styles.field}>
+                            <label className={styles.label}>Email <RequiredMark /></label>
+                            <input 
+                                className={`${styles.input}${errors.email ? " border border-rating-red" : ""}`}
+                                type="email" 
+                                name="email" 
+                                value={values.email}
+                                onChange={handleChange} 
+                            />
+                        </div>
+                        {/*
                         <div className={`${styles.field} mb-2`}>
                             <label className={styles.label}>Approved</label>
                             <Switch size="lg"/>
                         </div>
+                        */}
                     </div>
                     <div className={`${styles.field} bg-zinc-100 py-4 px-4 rounded-md`}>
                         <label className={styles.label}>Upload Request CSV</label>
@@ -330,16 +360,16 @@ const RequestForm: FunctionComponent<RequestFormProps> = (props) => {
                     </div>
 
                     <div className="py-4">
-                        <button 
-                            className="py-2 px-2 bg-blue-3 text-white rounded-md"
-                            disabled={isSubmitting}
-                            onMouseDown={() => {
-                                submitForm();
-                            }}
-                        >{buttonText ? buttonText : "Send Request"}</button>
+                        <Button 
+                            type="primary"
+                            submitting={isSubmitting}
+                            onMouseDown={submitForm}
+                            disabled={!isValid}
+                            label={buttonText ? buttonText : "Send Request"}
+                        />
                     </div>
                 </div>
-            )} 
+            )}
         </Formik>
         </div>
     );

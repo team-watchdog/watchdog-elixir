@@ -8,6 +8,7 @@ import isEmail from "validator/lib/isEmail";
 import SectionHeader from "../partials/SectionHeader";
 import { Button } from "../partials/Button";
 import DrugSearch from "../partials/DrugSearch";
+import { RequiredMark } from "../partials/RequiredMark";
 
 // utils
 import { RequestWithCookie, getAuthUser, SignedPayload } from "../middleware/utils";
@@ -27,10 +28,6 @@ import axios from "axios";
 interface PledgeForm extends Pledge{
     newEquipmentName: string;
     newEquipmentNotes: string;
-}
-
-const RequiredMark: FunctionComponent = () => {
-    return <span className="text-rating-red">*</span>
 }
 
 const MyPledge: FunctionComponent = () => {
@@ -97,7 +94,7 @@ const MyPledge: FunctionComponent = () => {
                             {({ values, errors, setFieldValue, handleChange, isSubmitting, submitForm }) => (
                                 <div className="flex-1 py-6">
                                     <div className={formClassNames.field}>
-                                        <label className={formClassNames.label}>Name <RequiredMark /></label>
+                                        <label className={formClassNames.label}>Your name <RequiredMark /></label>
                                         <input className={`${formClassNames.input}${errors.name ? " border border-rating-red" : ""}`} type="text" name="name" onChange={handleChange} value={values.name} />
                                     </div>
                                     <div className={formClassNames.field}>

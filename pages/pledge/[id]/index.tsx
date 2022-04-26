@@ -50,6 +50,8 @@ export const getServerSideProps = async ({ req, params } : { req: RequestWithCoo
         return e;
     }
 
+    console.log(JSON.stringify(pledge));
+
     return {
         props: {
             pledge,
