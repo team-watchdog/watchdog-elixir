@@ -38,6 +38,9 @@ export default async function handler(
 
         await elasticClient.indices.refresh({ index: "pledges" });
 
+        console.log("FORWARD TO");
+        console.log(ForwardEmailsTo);
+
         // grab emails from request ids
 
         // send email with all requests
