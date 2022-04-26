@@ -109,12 +109,6 @@ const MyPledge: FunctionComponent = () => {
                                         <label className={formClassNames.label}>Notes</label>
                                         <textarea className={formClassNames.input} name="notes" onChange={handleChange} value={values.notes} rows={6}></textarea>
                                     </div>
-                                    {/*
-                                    <div className={formClassNames.field}>
-                                        <label className={formClassNames.label}>Supporting Files</label>
-                                        <input type="file" />
-                                    </div>
-                                    */}
                                     <div className="py-6">
                                         <h3 className="text-xl font-bold">Supplies</h3>
                                         <div className="flex-row py-4">
