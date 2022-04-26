@@ -57,7 +57,8 @@ export default async function handler(
           });
         } catch (e) {
             console.log("EMAIL ERROR");
-            console.log(e.response.body);
+            console.log(e);
+            //console.log(e.response.body);
         }
 
         // TODO: chunk requests into individual requirements and send out emails
