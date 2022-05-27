@@ -1,27 +1,42 @@
-# Next.js + Tailwind CSS Example
+![Watchdog Elixir Logo](/public/logo.png)
 
-This example shows how to use [Tailwind CSS](https://tailwindcss.com/) [(v3.0)](https://tailwindcss.com/blog/tailwindcss-v3) with Next.js. It follows the steps outlined in the official [Tailwind docs](https://tailwindcss.com/docs/guides/nextjs).
+# Welcome to Elixir
+💻 Live URL: http://elixir.watchdog.team/
+## Background
+Elixir is a project launched by Team Watchdog(@teamwatchdog) in response to the medicine and medical equipment shortage caused by the 2022 Economic Crisis in Sri Lanka (https://longform.watchdog.team/whats-happening-with-the-sri-lankan-economy). The initial attempt was to understand the ground realities concerning the availability of drugs and other medical equipment. It has since evolved into a system where donors can pledge supplies inside the system itself — where they get connected to the MOH donor division and other aid organizations directly via structured emails.
 
-## Preview
+## Problems we are trying to solve
+1. Collecting structured data about medicine requirements from facilities around the country.
+2. Minimising typos, disambiguations, and clerical errors when collecting requests.
+3. Creating a central database of all medicine requirements around the country.
+4. Providing potential donors access to information about local suppliers for specific drugs.
 
-Preview the example live on [StackBlitz](http://stackblitz.com/):
+## Approach (K.I.S.S.)
+Elixir was designed so that it requires the least possible integration points. It's built to be a ***90/10 solution***.
+> Talking to users usually yields a long, complicated list of features to build. One piece of advice that YC partner Paul Buchheit (PB) always gives in this case is to look for the “90/10 solution”. That is, look for a way in which you can accomplish 90% of what you want with only 10% of the work/effort/time. If you search hard for it, there is almost always a 90/10 solution available. Most importantly, a 90% solution to a real customer problem which is available right away, is much better than a 100% solution that takes ages to build.
+# Technical
+## Tech Stack
+- Typescript with NextJS
+- TailwindCSS
+- Postgres with Prisma
+- Elasticsearch
+- Sendgrid
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/vercel/next.js/tree/canary/examples/with-tailwindcss)
+## Environment variables
+- `DATABASE_URL`: URL with authentication details for your POSTGRESQL instance. (This should go inside `.env` if you're using .env files to set environment variables.)
+- `ELASTICSEARCH_CLOUD_ID`: Elastic cloud instance ID
+- `ELASTICSEARCH_USERNAME`: Elasticsearch instance username
+- `ELASTICSEARCH_PASSWORD`: Elasticsearch instance password
+- `SENDGRID_API_KEY`: Sendgrid API Key. Sendgrid is used to send authentication emails and emails about pledges.
+- `APP_HOST_URL`: Link to the dashboard used to send users back to the app from emails.
+- `FORWARD_EMAILS_TO`: Array of emails separated commas. Pledge emails will get forwarded to these specific emails. 
+- `JWT_SECRET`: JWT secret to generate JWTs for authentication
 
-## Deploy your own
-
-Deploy the example using [Vercel](https://vercel.com?utm_source=github&utm_medium=readme&utm_campaign=next-example):
-
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/git/external?repository-url=https://github.com/vercel/next.js/tree/canary/examples/with-tailwindcss&project-name=with-tailwindcss&repository-name=with-tailwindcss)
-
-## How to use
-
-Execute [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app) with [npm](https://docs.npmjs.com/cli/init) or [Yarn](https://yarnpkg.com/lang/en/docs/cli/create/) to bootstrap the example:
-
-```bash
-npx create-next-app --example with-tailwindcss with-tailwindcss-app
-# or
-yarn create next-app --example with-tailwindcss with-tailwindcss-app
-```
-
-Deploy it to the cloud with [Vercel](https://vercel.com/new?utm_source=github&utm_medium=readme&utm_campaign=next-example) ([Documentation](https://nextjs.org/docs/deployment)).
+## Setting up on your local environment
+1. Clone this repo on your machine.
+2. Put your `.env.local` file inside the source folder or set the environment variables via the terminal.
+3. Run `yarn install` to install all dependencies
+4. Run `prisma migrate run` to setup your POSTGRES database.
+5. Run `yarn dev` to start your development server
+## Loading up with hospital and medicine data
+Refer to: https://github.com/team-watchdog/elixir-helpers
