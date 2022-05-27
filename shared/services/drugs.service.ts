@@ -85,4 +85,22 @@ export default class DrugService{
         if (document) return { ...document._source, id: document._id };
         return null;
     }
+
+    static async GetAllDrugs(){
+        const resp = await elasticClient.search({
+            index: "drugs",
+            size: 10000,
+            query: undefined,
+            sort: [
+                { 
+                    createdAt : {
+                        order : "desc", 
+                        format : "strict_date_optional_time_nanos"
+                    }
+                },
+            ]
+        });
+
+        return resp.hits.hits;
+    }
 }
