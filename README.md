@@ -3,7 +3,7 @@
 # Welcome to Elixir
 💻 Live URL: http://elixir.watchdog.team/
 ## Background
-Elixir is a project launched by Team Watchdog(@teamwatchdog) in response to the medicine and medical equipment shortage caused by the 2022 Economic Crisis in Sri Lanka (https://longform.watchdog.team/whats-happening-with-the-sri-lankan-economy). 
+Elixir is a project launched by Team Watchdog(https://watchdog.team) in response to the medicine and medical equipment shortage caused by the 2022 Economic Crisis in Sri Lanka (https://longform.watchdog.team/whats-happening-with-the-sri-lankan-economy). 
 
 The initial attempt was to design something that could speed up demand-side mapping, allowing hospitals to enter their needs directly. These requests would then be matched (by generic name, brand name, dosage) to the closest available entry in the NMRA database of licensed importers, so that any donors would know where to get medicine from. We've since addded the ability for donors to pledge supplies inside the system itself — where they get connected to the MOH donor division and other aid organizations directly via structured emails.
 
